@@ -1,0 +1,53 @@
+<% include partials/header %>
+
+<header>
+  <div class="main">
+    <div class="ui grid">
+      <div class="row">
+        <div class="column padding-reset">
+          <div class="ui huge message page grid">
+            <h1 class="ui huge header blue centered"><i class="leaf red icon"></i> PARK YOUR CHILD </h1>
+            <p>
+              Cum horribilem walking dead resurgere de crazed sepulcris creaturis, zombie sicut de grave
+              feeding iride et serpens. Pestilentia, shaun ofthe dead scythe animated corpses ipsa screams.
+            </p>
+            <a href="/parks/new" class="ui button red basic">Add a New Park »</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ui container not_main">
+  <div class="ui special cards">
+    <% parks.forEach(function(park){ %>
+    <div class="teal card">
+      <div class="blurring dimmable image">
+        <div class="ui inverted dimmer">
+          <div class="content">
+            <div class="center">
+              <a href="/parks/<%= park._id %>" class="ui teal button">View Park</a>
+            </div>
+          </div>
+        </div>
+        <img src="<%= park.image %>">
+      </div>
+      <div class="content">
+        <a href="/parks/<%= park._id %>" class="header"><%= park.name %></a>
+        <div class="meta">
+          <span class="date"><%= park.address %> -  <%= park.postalCode %></span>
+        </div>
+      </div>
+      <div class="extra content">
+        <a>
+          <i class="users icon"></i>
+          2 Members
+        </a>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div>
+
+<% include partials/footer %>
