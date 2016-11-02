@@ -1,0 +1,32 @@
+<% include ../partials/header %>
+
+<div class="main">
+
+  <h2 class="ui center aligned icon header">
+    <i class="circular leaf icon"></i>
+    Add a comment to <%= park.name %>
+  </h2>
+
+  <div class="ui centered grid">
+    <form class="ui seven wide column blue form" action="/parks/<%= park._id %>/comments" method="POST">
+      <div class="ui inverted segment">
+        <div class="ui inverted form">
+          <div class="fields">
+            <div class="field required">
+              <label>Author</label>
+              <input type="text" name="comment[author]" placeholder="author">
+            </div>
+          </div>
+          <div class="10 wide field required">
+            <label>Text</label>
+            <textarea rows='4' name="comment[text]" placeholder="text"></textarea>
+          </div>
+        </div>
+        <br>
+        <button class="ui fluid red submit button">Submit</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+<% include ../partials/footer %>

@@ -3,7 +3,8 @@ var express                 = require('express'),
     mongoose                = require('mongoose'),
     app                     = express(),
     seedDB                  = require('./seeds'),
-    Park                    = require('./models/park');
+    Park                    = require('./models/park'),
+    Comment                 = require('./models/comment');
 
 mongoose.connect('mongodb://localhost/pyc_me');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -22,7 +23,7 @@ app.get('/parks', function (req, res) {
     if(err){
       console.log(err);
     } else {
-      res.render('index', {parks: allParks});
+      res.render('parks/index', {parks: allParks});
     }
   });
 });
@@ -47,7 +48,7 @@ app.post('/parks', function (req, res) {
 
 //NEW
 app.get('/parks/new', function (req, res) {
-  res.render('new');
+  res.render('parks/new');
 });
 
 //SHOW
@@ -56,7 +57,40 @@ app.get('/parks/:id', function (req, res) {
     if(err){
       console.log(err);
     } else {
-      res.render('show', {park: park});
+      res.render('parks/show', {park: park});
+    }
+  });
+});
+
+//==============================COMMENTS=======================
+//NEW
+app.get('/parks/:id/comments/new', function (req, res) {
+    Park.findById(req.params.id, function (err, park) {
+      if(err){
+        console.log(err);
+      } else {
+        res.render('./comments/new', {park: park});
+      }
+    })
+});
+
+//CREATE
+app.post('/parks/:id/comments', function (req, res) {
+  //lookup park with ID
+  Park.findById(req.params.id, function (err, park) {
+    if(err){
+      console.log(err);
+      res.redirect('/parks');
+    } else {
+      Comment.create(req.body.comment, function (err, comment) {
+        if(err){
+          console.log(err);
+        } else {
+          park.comments.push(comment);
+          park.save();
+          res.redirect('/parks/' + park._id);
+        }
+      });
     }
   });
 });

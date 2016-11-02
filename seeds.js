@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     data     = require('./data'),
     Comment  = require('./models/comment'),
-    Park     = require('./models/park');
+    Park     = require('./models/park'),
+    Faker    = require('Faker');
 
 function seedDB() {
   //remove all parks
@@ -15,7 +16,20 @@ function seedDB() {
         if(err){
           console.log(err);
         } else {
-          console.log('added park')
+          console.log('added park');
+          //add Faker data to description and image
+            Park.update(
+              // {$set: { description: Faker.Lorem.sentence() }},
+              // {$set: { image: Faker.Image.city() }},
+              {},{description: 'Here goes description of the park',
+              image: 'https://cdn.pbrd.co/images/agXHvkBUX.png'},
+              {upsert: false,
+               multi: true}
+            ,function (err) {
+              if(err){
+                console.log(err)
+              }
+            });
           //create a comment
           Comment.create(
             {

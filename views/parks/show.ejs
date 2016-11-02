@@ -1,16 +1,19 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
   <div class="main">
     <h1><%= park.name %></h1>
     <img src="<%= park.image %>" alt="" />
     <p>
-      <%= park.description %>
+      <h2><%= park.description %></h2>
     </p>
     <% park.comments.forEach(function(comment){ %>
     <p>
         <strong><%= comment.author %></strong> - <%= comment.text %>
     </p>
     <% }) %>
+    <p>
+      <a class="ui red button" href="/parks/<%= park._id %>/comments/new">Add New Comment</a>
+    </p>
   </div>
 
-<% include partials/footer %>
+<% include ../partials/footer %>
