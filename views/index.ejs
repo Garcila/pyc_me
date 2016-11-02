@@ -19,35 +19,37 @@
   </div>
 </header>
 
-<div class="ui container not_main">
-  <div class="ui special cards">
-    <% parks.forEach(function(park){ %>
-    <div class="teal card">
-      <div class="blurring dimmable image">
-        <div class="ui inverted dimmer">
+<!-- <div class="ui container not_main"> -->
+  <div id="main" class="ui four column grid">
+      <div class="ui centered special cards">
+        <% parks.forEach(function(park){ %>
+        <div class="teal card">
+          <div class="blurring dimmable image">
+            <div class="ui inverted dimmer">
+              <div class="content">
+                <div class="center">
+                  <a href="/parks/<%= park._id %>" class="ui teal button">View Park</a>
+                </div>
+              </div>
+            </div>
+            <img src="<%= park.image %>">
+          </div>
           <div class="content">
-            <div class="center">
-              <a href="/parks/<%= park._id %>" class="ui teal button">View Park</a>
+            <a href="/parks/<%= park._id %>" class="header"><%= park.name %></a>
+            <div class="meta">
+              <span class="date"><%= park.address %> -  <%= park.postalCode %></span>
             </div>
           </div>
+          <div class="extra content">
+            <a>
+              <i class="users icon"></i>
+              2 Members
+            </a>
+          </div>
         </div>
-        <img src="<%= park.image %>">
+        <% }); %>
       </div>
-      <div class="content">
-        <a href="/parks/<%= park._id %>" class="header"><%= park.name %></a>
-        <div class="meta">
-          <span class="date"><%= park.address %> -  <%= park.postalCode %></span>
-        </div>
-      </div>
-      <div class="extra content">
-        <a>
-          <i class="users icon"></i>
-          2 Members
-        </a>
-      </div>
-    </div>
-    <% }); %>
   </div>
-</div>
+<!-- </div> -->
 
 <% include partials/footer %>
