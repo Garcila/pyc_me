@@ -1,8 +1,8 @@
 var mongoose = require('mongoose'),
     data     = require('./data'),
     Comment  = require('./models/comment'),
-    Park     = require('./models/park'),
-    Faker    = require('Faker');
+    Park     = require('./models/park');
+
 
 function seedDB() {
   //remove all parks
