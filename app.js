@@ -3,14 +3,30 @@ var express                 = require('express'),
     mongoose                = require('mongoose'),
     app                     = express(),
     seedDB                  = require('./seeds'),
+    passport                = require('passport'),
+    localStrategy           = require('passport-local'),
+    passportLocalMongoose   = require('passport-local-mongoose'),
+    User                    = require('./models/user'),
     Park                    = require('./models/park'),
     Comment                 = require('./models/comment');
 
 mongoose.connect('mongodb://localhost/pyc_me');
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 // seedDB();
+
+app.use(require('express-session')({
+  secret: 'Please go park your child',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //ROOT
 app.get('/', function (req, res) {
@@ -29,7 +45,7 @@ app.get('/parks', function (req, res) {
 });
 
 //CREATE
-app.post('/parks', function (req, res) {
+app.post('/parks', isLoggedIn, function (req, res) {
   // var name = req.body.name;
   // var address = req.body.address;
   // var postalCode = req.body.postalCode;
@@ -47,7 +63,7 @@ app.post('/parks', function (req, res) {
 });
 
 //NEW
-app.get('/parks/new', function (req, res) {
+app.get('/parks/new', isLoggedIn, function (req, res) {
   res.render('parks/new');
 });
 
@@ -94,6 +110,52 @@ app.post('/parks/:id/comments', function (req, res) {
     }
   });
 });
+
+//==============================USER=======================
+//SIGN UP ROUTES ---- REGISTER
+app.get('/register', function (req, res) {
+  res.render('register');
+});
+
+//register logic
+app.post('/register', function (req, res) {
+  User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
+    if(err){
+      console.log(err);
+      return res.render('register');
+    }
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/parks');
+    });
+  });
+});
+
+//LOGIN ROUTES
+app.get('/login', function (req, res) {
+  res.render('login');
+});
+
+//login logic
+app.post("/login", passport.authenticate('local',
+    {
+        successRedirect: '/parks',
+        failureRedirect: '/login'
+    }), function(req, res){
+});
+
+//Logout logic
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/parks');
+});
+
+//MIDDLEWARE ================================================================
+function isLoggedIn(req, res, next) {
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect('/login');
+}
 
 var PORT = process.env.PORT || 3000;
 
