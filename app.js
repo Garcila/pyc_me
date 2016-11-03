@@ -8,9 +8,9 @@ var express                 = require('express'),
 
 mongoose.connect('mongodb://localhost/pyc_me');
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
-seedDB();
+// seedDB();
 
 //ROOT
 app.get('/', function (req, res) {
@@ -30,13 +30,13 @@ app.get('/parks', function (req, res) {
 
 //CREATE
 app.post('/parks', function (req, res) {
-  var name = req.body.name;
-  var address = req.body.address;
-  var postalCode = req.body.postalCode;
-  var image = req.body.image;
-  var description = req.body.description;
-  var newPark = {name: name, address: address, postalCode: postalCode, image: image, description: description}
-  Park.create(newPark, function (err, park) {
+  // var name = req.body.name;
+  // var address = req.body.address;
+  // var postalCode = req.body.postalCode;
+  // var image = req.body.image;
+  // var description = req.body.description;
+  // var newPark = {name: name, address: address, postalCode: postalCode, image: image, description: description}
+  Park.create(req.body.park, function (err, park) {
     if(err){
       console.log(err);
       res.redirect("/parks/new"); //=========================flash message that postal code must have 6 characters
