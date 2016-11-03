@@ -17,6 +17,7 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 // seedDB();
 
+//PASSPORT CONFIGURATION
 app.use(require('express-session')({
   secret: 'Please go park your child',
   resave: false,
@@ -27,6 +28,12 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//middleware adds {currentUser: req.user} to all routes, that way I don't have to do it manually
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 //ROOT
 app.get('/', function (req, res) {
@@ -80,7 +87,7 @@ app.get('/parks/:id', function (req, res) {
 
 //==============================COMMENTS=======================
 //NEW
-app.get('/parks/:id/comments/new', function (req, res) {
+app.get('/parks/:id/comments/new', isLoggedIn, function (req, res) {
     Park.findById(req.params.id, function (err, park) {
       if(err){
         console.log(err);
@@ -91,7 +98,7 @@ app.get('/parks/:id/comments/new', function (req, res) {
 });
 
 //CREATE
-app.post('/parks/:id/comments', function (req, res) {
+app.post('/parks/:id/comments', isLoggedIn, function (req, res) {
   //lookup park with ID
   Park.findById(req.params.id, function (err, park) {
     if(err){

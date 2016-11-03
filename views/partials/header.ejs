@@ -14,7 +14,11 @@
       </div>
       <a href="/parks"class="active red item">All Parks</a>
       <a href="/parks/new"class="red item">Add Park</a>
-      <a href="/login" class="red item floated right">Login</a>
-      <a href="/register" class="red item">Sign Up</a>
-      <a href="/logout" class="red item">Logout</a>
+      <% if(!currentUser){ %>
+        <a href="/login" class="red item floated right">Login</a>
+        <a href="/register" class="red item">Sign Up</a>
+      <% } else { %>
+        <a href="#"class="item floated right" href="#">Signed In As <%= currentUser.username %></a>
+        <a href="/logout" class="red item">Logout</a>
+      <% } %>
     </nav>
