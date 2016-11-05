@@ -5,3 +5,13 @@
 #main {
   margin-top: 1em;
 }
+
+#invisibleButton {
+  background: none;
+  border: none;
+
+}
+
+#invisibleButton :hover {
+  color: red;
+}

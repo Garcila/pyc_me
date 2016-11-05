@@ -6,6 +6,13 @@ var parkSchema = new mongoose.Schema({
   postalCode:   {type: String, minlength: ['6', 'Postal Code must be at least 6 characters'] },
   description:  String,
   image:        String,
+  author:       {
+      id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:  "User"
+      },
+      username: String
+  },
   comments:     [
     {
       type: mongoose.Schema.Types.ObjectId,

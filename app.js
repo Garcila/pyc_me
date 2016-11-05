@@ -6,6 +6,7 @@ var express                 = require('express'),
     passport                = require('passport'),
     localStrategy           = require('passport-local'),
     passportLocalMongoose   = require('passport-local-mongoose'),
+    methodOverride          = require('method-override'),
     User                    = require('./models/user'),
     Park                    = require('./models/park'),
     Comment                 = require('./models/comment');
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://localhost/pyc_me');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 // seedDB();
 

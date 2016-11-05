@@ -4,34 +4,34 @@
 
   <h2 class="ui center aligned icon header">
     <i class="circular leaf icon"></i>
-    Create a New Park
+    Edit Park <%= park.name %>
   </h2>
 
   <div class="ui centered grid">
-    <form class="ui seven wide column blue form" action="/parks" method="POST">
+    <form class="ui seven wide column blue form" action="/parks/<%= park._id %>?_method=PUT" method="POST">
       <div class="ui inverted segment">
         <div class="ui inverted form">
           <div class="six wide field required">
             <label>First Name</label>
-            <input type="text" name="name" value="" placeholder="name">
+            <input type="text" name="park[name]" value= '<%= park.name %>' >
           </div>
           <div class="fields">
             <div class="field required">
               <label>Address</label>
-              <input type="text" name="address" value="" placeholder="address">
+              <input type="text" name="park[address]" value= '<%= park.address %>' >
             </div>
             <div class="field">
               <label>Postal Code</label>
-              <input type="text" name="postalCode" value="" placeholder="postal Code">
+              <input type="text" name="park[postalCode]" value= '<%= park.postalCode %>' >
             </div>
           </div>
           <div class="field">
             <label>Image</label>
-            <input type="text" name="image" value="" placeholder="image">
+            <input type="text" name="park[image]" value= '<%= park.image %>' >
           </div>
           <div class="field">
             <label>Text</label>
-            <textarea rows='2' name="description" placeholder="description"></textarea>
+            <textarea rows='2' name="park[description]" ><%= park.description %></textarea>
           </div>
         </div>
         <br>

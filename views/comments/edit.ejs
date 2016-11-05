@@ -4,16 +4,18 @@
 
   <h2 class="ui center aligned icon header">
     <i class="circular leaf icon"></i>
-    Add a comment to <%= park.name %>
+    Edit comment
   </h2>
 
   <div class="ui centered grid">
-    <form class="ui seven wide column blue form" action="/parks/<%= park._id %>/comments" method="POST">
+    <form class="ui seven wide column blue form" action="/parks/<%= park_id %>/comments/<%= comment._id %>?_method=PUT" method="POST">
       <div class="ui inverted segment">
         <div class="ui inverted form">
-          <div class="10 wide field required">
-            <label>Text</label>
-            <textarea rows='4' name="comment[text]" placeholder="text"></textarea>
+          <div class="field">
+            <div class="field required">
+              <label>Text</label>
+              <textarea name="comment[text]"><%= comment.text %></textarea>
+            </div>
           </div>
         </div>
         <br>

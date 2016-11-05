@@ -18,25 +18,46 @@
             <img class="ui mini image" src="<%= park.image %>" alt="" />
           </div>
           <div class="content">
+              <span class="right floated">
+                Submitted: <%= park.author.username %>
+              </span>
               <a href="#" class="header"><%= park.name %></a>
             <div class="description">
               <%= park.description %>
             </div>
           </div>
-          <a href="/parks/<%= park._id %>/comments/new" class="ui fluid teal button">
-            <i class="add icon"></i>
-            Add New Comment
-          </a>
+          <% if(currentUser && park.author.id.equals(currentUser._id)){ %>
+            <div class="two ui buttons">
+              <a href="/parks/<%= park._id %>/edit" class="ui fluid yellow button">
+                <i class="write icon"></i>
+                Edit Park
+              </a>
+              <form class="button" action="/parks/<%= park._id %>?_method=DELETE" method="POST">
+                <button class="ui fluid red button"><i class="trash outline icon"></i>Delete Park</button>
+              </form>
+            </div>
+          <% } %>
+          <div class="ui divider"></div>
+          <div class="ui buttons">
+            <a href="/parks/<%= park._id %>/comments/new" class="ui fluid teal button">
+              <i class="add icon"></i>
+              Add New Comment
+            </a>
+          </div>
           <div class="extra content">
             <% park.comments.forEach(function(comment){ %>
-              <p>
                 <div class="content">
                   <div class="right floated meta">14h</div>
-                  <i class="user icon"></i><strong><%= comment.author %></strong>
+                  <i class="user icon"></i><strong><%= comment.author.username %></strong>
                 </div>
-                <strong></strong><%= comment.text %>
+                <strong><%= comment.text %></strong>
+                <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                  <form class="right floated" action="/parks/<%= park._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                      <button id="invisibleButton" ><i class="trash icon"></i></button>
+                  </form>
+                  <a href="/parks/<%= park._id %>/comments/<%= comment._id %>/edit"><i class="write icon right floated"></i></a>
+                <% } %>
                 <div class="ui divider"></div>
-              </p>
               <% }) %>
           </div>
       </div>
