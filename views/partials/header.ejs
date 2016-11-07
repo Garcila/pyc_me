@@ -22,3 +22,21 @@
         <a href="/logout" class="red item">Logout</a>
       <% } %>
     </nav>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="ui container">
+      <% if(error && error.length > 0){ %>
+          <div class="ui mini red message">
+            <h3><%= error %></h3>
+          </div>
+      <% } %>
+      <% if(error && success.length > 0){ %>
+        <div class="ui mini green message">
+          <h3><%= success %></h3>
+        </div>
+      <% } %>
+    </div>

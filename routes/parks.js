@@ -1,6 +1,7 @@
 var express         = require('express');
 var router          = express.Router();
 var Park            = require('../models/park');
+var middleware      = require('../middleware');  //no need to specify index.js.  By default index.js is run when folder is required
 
 //INDEX
 router.get('/parks', function (req, res) {
@@ -14,7 +15,7 @@ router.get('/parks', function (req, res) {
 });
 
 //CREATE
-router.post('/parks', isLoggedIn, function (req, res) {
+router.post('/parks', middleware.isLoggedIn, function (req, res) {
   var name = req.body.name;
   var address = req.body.address;
   var postalCode = req.body.postalCode;
@@ -36,7 +37,7 @@ router.post('/parks', isLoggedIn, function (req, res) {
 });
 
 //NEW
-router.get('/parks/new', isLoggedIn, function (req, res) {
+router.get('/parks/new', middleware.isLoggedIn, function (req, res) {
   res.render('parks/new');
 });
 
@@ -52,14 +53,14 @@ router.get('/parks/:id', function (req, res) {
 });
 
 //EDIT
-router.get('/parks/:id/edit', checkParkOwnership, function (req, res) {
+router.get('/parks/:id/edit', middleware.checkParkOwnership, function (req, res) {
   Park.findById(req.params.id, function (err, park) {
     res.render('parks/edit', {park: park});
   });
 });
 
 //UPDATE
-router.put('/parks/:id', checkParkOwnership, function (req, res) {
+router.put('/parks/:id', middleware.checkParkOwnership, function (req, res) {
   Park.findByIdAndUpdate(req.params.id, req.body.park, function (err, park) {
     if(err){
       console.log(err);
@@ -71,40 +72,15 @@ router.put('/parks/:id', checkParkOwnership, function (req, res) {
 });
 
 //DESTROY
-router.delete('/parks/:id', checkParkOwnership, function (req, res) {
+router.delete('/parks/:id', middleware.checkParkOwnership, function (req, res) {
   Park.findByIdAndRemove(req.params.id, function (err) {
     if(err){
       res.redirect('/parks');
     } else {
+      req.flash('success', 'Park deleted');
       res.redirect('/parks');
     }
   });
 });
-
-//MIDDLEWARE ================================================================
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect('/login');
-}
-
-function checkParkOwnership(req, res, next) {
-  if(req.isAuthenticated()){
-    Park.findById(req.params.id, function (err, park) {
-      if(err){
-        res.redirect('back');
-      } else {
-        //does user own park
-        if(park.author.id.equals(req.user._id)){
-          next();
-        } else {
-        }
-      }
-    });
-  } else {
-    res.redirect('back');
-  }
-}
 
 module.exports = router;

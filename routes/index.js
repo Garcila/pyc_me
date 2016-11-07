@@ -18,10 +18,11 @@ router.get('/register', function (req, res) {
 router.post('/register', function (req, res) {
   User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
     if(err){
-      console.log(err);
-      return res.render('register');
+      req.flash('error', err.message);
+      return res.redirect('/register');
     }
     passport.authenticate('local')(req, res, function () {
+      req.flash('success', 'You have successfully register to PYC, ' + user.username);
       res.redirect('/parks');
     });
   });
@@ -43,16 +44,8 @@ router.post("/login", passport.authenticate('local',
 //LOGOUT ROUTE
 router.get('/logout', function (req, res) {
   req.logout();
+  req.flash('success', 'You have logged out');
   res.redirect('/parks');
 });
-
-
-//MIDDLEWARE ================================================================
-function isLoggedIn(req, res, next) {
-  if(req.isAuthenticated()){
-    return next();
-  }
-  res.redirect('/login');
-}
 
 module.exports = router;
