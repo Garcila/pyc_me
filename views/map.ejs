@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Park Your Child</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="/stylesheets/map.css">
+  </head>
+  <body>
+
+    <nav class="ui top fixed stackable inverted blue menu">
+      <div class="item">
+        <a href="/"><i class="inverted red circular leaf icon large"></i></a>
+      </div>
+      <a href="/parks"class="active red item">All Parks</a>
+      <a href="/parks/new"class="red item">Add Park</a>
+      <% if(!currentUser){ %>
+        <a href="/login" class="red item floated right">Login</a>
+        <a href="/register" class="red item">Sign Up</a>
+      <% } else { %>
+        <a href="#"class="item floated right" href="#">Signed In As <%= currentUser.username %></a>
+        <a href="/logout" class="red item">Logout</a>
+      <% } %>
+    </nav>
+    <div class="ui container">
+      <% if(error && error.length > 0){ %>
+        <div class="ui mini red message">
+          <h3><%= error %></h3>
+        </div>
+        <% } %>
+        <% if(error && success.length > 0){ %>
+          <div class="ui mini green message">
+            <h3><%= success %></h3>
+          </div>
+          <% } %>
+        </div>
+
+    <div id="map"></div>
+    <script>
+
+
+      var map;
+      var geocoder;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 15
+        });
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+
+      
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBylPO6AGjqqmvD1LUDseisWJ6JYGNZjE&callback=initMap" async defer></script>
+  </body>
+<% include ./partials/footer %>

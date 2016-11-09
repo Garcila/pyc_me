@@ -14,7 +14,8 @@ var express                 = require('express'),
 
 var commentRoutes           = require('./routes/comments'),
     parkRoutes              = require('./routes/parks'),
-    indexRoutes             = require('./routes/index');
+    indexRoutes             = require('./routes/index'),
+    mapRoutes               = require('./routes/map');
 
 mongoose.connect('mongodb://localhost/pyc_me');
 
@@ -48,6 +49,7 @@ app.use(function (req, res, next) {
 app.use(indexRoutes);
 app.use(commentRoutes);
 app.use(parkRoutes);
+app.use(mapRoutes);
 
 var PORT = process.env.PORT || 3000;
 

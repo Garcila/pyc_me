@@ -1,0 +1,38 @@
+.ui.card.container.landing {
+  border: 1px, solid, white;
+  background: none;
+  padding-top: 10px;
+  margin-top: 10%;
+}
+
+#title {
+  color: white;
+}
+
+video#bgvid {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url(/videos/dfvid.jpg) no-repeat;
+    background-size: cover;
+    /*-webkit-filter: hue-rotate(290deg);*/
+    filter: opacity(50%) brightness(80%);
+}
+
+@media screen and (max-device-width: 800px) {
+    html {
+         background: url(/videos/dfvid.jpg) #000 no-repeat center center fixed;
+    }
+    #bgvid {
+        display: none;
+    }
+}

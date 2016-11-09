@@ -1,10 +1,31 @@
-<% include partials/header %>
+<!-- <% include partials/header %> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.min.css">
+<link rel="stylesheet" href="/stylesheets/app.css">
+<link rel="stylesheet" href="stylesheets/landing.css">
 
-<div class="main">
+<body>
+  <video playsinline autoplay muted loop poster="/videos/dfvid.jpg" id="bgvid">
+      <source src="/videos/dgvid.mp4" type="video/mp4">
+  </video>
 
-  <h1>landing parks page</h1>
 
-  <a href="/parks">View all Parks</a>
-</div>
+  <div  class="ui card container landing">
+    <div  class="main ui twelve column centered grid">
+      <div  class="eight column centered row">
+        <h1  class="ui icon header">
+          <i class="inverted red circular leaf icon large"></i>
+          <div  id="title" class="content">
+            PARK YOUR CHILD
+            <div id="title" class="sub header">Helping you find nature in your city</div>
+          </div>
+        </h1>
+      </div>
+    </div>
+    <div class="ui bottom attached buttons">
+      <a href="/login" class="ui red button">Sign In</a>
+      <a href="/register" class="ui blue button">Log In</a>
+    </div>
+  </div>
+</body>
 
 <% include partials/footer %>
